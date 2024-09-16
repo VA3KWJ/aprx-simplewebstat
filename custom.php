@@ -1,1 +1,5 @@
-//put everything you want in this part
+<?php
+
+// put everything you want in this part
+
+//EOF
