@@ -89,6 +89,11 @@ function color($row) {
     });
   });
   </script> </head> <body>
+	<div style="margin: 10px;">
+		<a href="index.php" style="text-decoration: none;">
+		<button style="padding: 6px 12px; font-size: 14px;">⟵ Return to Dashboard</button>
+		</a>
+	</div>
   <div id="tail"><i>Real time traffic monitor - Starting up...</i><br><br>
 <b>TIMESTAMP<?php echo str_repeat("&nbsp",17) ?>INTERF <?php echo str_repeat("&nbsp",3) ?>R/T<?php echo str_repeat("&nbsp",2)?>PATH:BODY</b>
 <br></div> </body>
