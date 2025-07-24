@@ -2,7 +2,13 @@
 include 'config.php';
 include 'common.php';
 
-logexists();
+//logexists();
+// Add failback
+if (!function_exists('logexists')) {
+    function logexists($file = '/var/log/aprx/aprx-rf.log') {
+        return file_exists($file) && is_readable($file);
+    }
+}
 
 if (isset($_GET['ajax'])) {
   session_start();
