@@ -111,7 +111,7 @@
                                 $time = time() - 3600;                                              // take frames from last 1 hour
                                 break;
                         
-                            case $_GET['time'] == "e":                                              // if whole log
+                            case ($_GET['time'] ?? '') == "e":                                              // if whole log. Parse Fix
                                 $time = 0;
                                 break;
                             
@@ -373,10 +373,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                        while ( list( $c, $nm ) = each( $receivedstations ) )
-                        {
-                    ?>
+
+		// PHP 8 Fix
+		<?php
+                        foreach ($receivedstations as $c => $nm) {
+                ?>
+
                     
                     <tr>
                         <td class="callsign"><?php echo '<a target="_blank" href="https://aprs.fi/?call='.$c.'">'.$c.'</a>' ?></td>
