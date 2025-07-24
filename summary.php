@@ -14,6 +14,10 @@
         overall improve the code.
 
 		Version 1.3
+  
+  	Modified by Stu VA3KWJ to apply PHP8.3 fixes
+   		Version 1.4
+
 	*******************************************************************************************/
 
     include 'config.php';
@@ -374,7 +378,6 @@
                 </thead>
                 <tbody>
 
-		// PHP 8 Fix
 		<?php
                         foreach ($receivedstations as $c => $nm) {
                 ?>
@@ -417,7 +420,7 @@
             <hr>
         </div>
         <div class="footer">
-            <a href="https://github.com/sq8vps/aprx-simplewebstat" target="_blank" >APRX Simple Webstat</a>&nbsp;by Peter SQ8VPS and Alfredo IZ7BOJ
+		<p><a href="https://github.com/VA3KWJ/aprx-simplewebstat" target="_blank">APRX Simple Webstat</a> updated by <a href="https://www.qrz.com/db/VA3KWJ" target="_blank">Stuart</a>. Visit me: <a href="https://va3kwj.ca" target="_blank">VA3KWJ</a> | Original <a href="https://github.com/sq8vps/aprx-simplewebstat" target="_blank" >APRX Simple Webstat</a> by Peter SQ8VPS and Alfredo IZ7BOJ</p>
         </div>
     </body>
 </html>
