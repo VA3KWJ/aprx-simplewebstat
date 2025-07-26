@@ -9,6 +9,143 @@ You can modify this program, but please give a credit to original authors. Progr
 
 *******************************************************************************************/
 
+/* Modernization */
+function loadStats($range = 'all') {
+    if (!defined('APRX_LOG_FILE') || !file_exists(APRX_LOG_FILE)) {
+        return ['stations' => []];
+    }
+
+    include_once 'config.php';
+    $stationlat = $GLOBALS['stationlat'];
+    $stationlon = $GLOBALS['stationlon'];
+    $myCallsign = $GLOBALS['interface'] ?? 'rf';
+
+    $cutoff = null;
+    if ($range !== 'all') {
+        $now = new DateTimeImmutable();
+        switch ($range) {
+            case '1h':  $cutoff = $now->modify('-1 hour'); break;
+            case '6h':  $cutoff = $now->modify('-6 hours'); break;
+            case '12h': $cutoff = $now->modify('-12 hours'); break;
+            case '1d':  $cutoff = $now->modify('-1 day'); break;
+            case '7d':  $cutoff = $now->modify('-7 days'); break;
+        }
+    }
+
+    $stations = [];
+    $lines = file(APRX_LOG_FILE, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    foreach ($lines as $line) {
+        if (preg_match('/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(\.\d+)?\s+(\S+)\s+([RT])\s+([A-Z0-9\-]+)>/', $line, $matches)) {
+            $timestamp = $matches[1];
+            $sourceCall = $matches[3];
+            $pathType = $matches[4];
+            $callsign = $matches[5];
+
+            // Time filter
+            if ($cutoff) {
+                $entryTime = DateTime::createFromFormat('Y-m-d H:i:s', $timestamp);
+                if (!$entryTime || $entryTime < $cutoff) {
+                    continue;
+                }
+            }
+
+            // Source type and digipeat flag
+            if ($sourceCall === 'APRSIS') {
+                $heard_via = 'APRS-IS';
+                $digipeated = false;
+            } elseif ($sourceCall === $myCallsign && $pathType === 'R') {
+                $heard_via = 'RF';
+                $digipeated = false;
+            } elseif ($sourceCall === $myCallsign && $pathType === 'T') {
+                $heard_via = 'RF';
+                $digipeated = true;
+            } else {
+                $heard_via = 'Other';
+                $digipeated = false;
+            }
+
+            // Try to extract lat/lon
+            $distance = null;
+            if (preg_match('/([:=!])([0-9]{2})([0-9]{2}\.\d+)([NS]).*?([0-9]{3})([0-9]{2}\.\d+)([EW])/', $line, $pos)) {
+                $lat = (float)$pos[2] + (float)$pos[3] / 60;
+                $lon = (float)$pos[5] + (float)$pos[6] / 60;
+                if ($pos[4] === 'S') $lat *= -1;
+                if ($pos[7] === 'W') $lon *= -1;
+                $distance = haversineDistance($stationlat, $stationlon, $lat, $lon);
+            }
+
+            if (!isset($stations[$callsign])) {
+                $stations[$callsign] = [
+                    'count' => 0,
+                    'last_heard' => '',
+                    'distance' => null,
+                    'heard_via' => $heard_via,
+                    'digipeated' => $digipeated
+                ];
+            }
+
+            $stations[$callsign]['count'] += 1;
+            $stations[$callsign]['last_heard'] = $timestamp;
+            if ($distance !== null) $stations[$callsign]['distance'] = $distance;
+            $stations[$callsign]['heard_via'] = $heard_via;
+            $stations[$callsign]['digipeated'] = $digipeated;
+        }
+    }
+
+    // Sort by last_heard descending
+    uasort($stations, function ($a, $b) {
+        return strcmp($b['last_heard'], $a['last_heard']);
+    });
+
+    return ['stations' => $stations];
+}
+
+function haversineDistance($lat1, $lon1, $lat2, $lon2) {
+    $earthRadius = 6371;
+    $lat1 = deg2rad($lat1);
+    $lat2 = deg2rad($lat2);
+    $lon1 = deg2rad($lon1);
+    $lon2 = deg2rad($lon2);
+
+    $dlat = $lat2 - $lat1;
+    $dlon = $lon2 - $lon1;
+
+    $a = sin($dlat/2)**2 + cos($lat1) * cos($lat2) * sin($dlon/2)**2;
+    $c = 2 * asin(sqrt($a));
+
+    return $earthRadius * $c;
+}
+
+function isDigipeatEnabled($interface, $confpath) {
+    if (!file_exists($confpath)) return false;
+
+    $lines = file($confpath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $inSourceBlock = false;
+    $matchCallsign = false;
+
+    foreach ($lines as $line) {
+        $line = trim($line);
+
+        if ($line === "<source>") {
+            $inSourceBlock = true;
+            $matchCallsign = false;
+        } elseif ($line === "</source>") {
+            $inSourceBlock = false;
+        } elseif ($inSourceBlock) {
+            if (stripos($line, "source $interface") !== false) {
+                $matchCallsign = true;
+            }
+            if ($matchCallsign && stripos($line, "relay-type directonly") !== false) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+/* End Modernization */
+
 function stationparse($frame) //function for parsing station information
 {
 	global $receivedstations;

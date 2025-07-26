@@ -1,0 +1,523 @@
+body {
+	font-family: "SF Pro Text", sans-serif;
+}
+
+button {
+	background-color: #08d;
+	border-radius: 12px;
+	border: 0;
+	box-sizing: border-box;
+	color: #eee;
+	cursor: pointer;
+	font-size: 18px;
+	padding: .5em;
+	margin: .5em;
+	outline: 0;
+	text-align: center;
+	height: auto;
+}
+
+.submit {
+	background-color: #08d;
+	font-size: 14px;
+	font-weight: bold;
+	border-radius: 6px;
+	border: 0;
+	box-sizing: border-box;
+	color: #eee;
+	cursor: pointer;
+	font-size: 14px;
+	/* padding: .5em;
+	margin: .5em; */
+	outline: 0;
+	text-align: center;
+	height: 2rem;
+	width: 5rem;
+}
+
+.submit-right {
+	text-align: center;
+	float: left;
+	display: flex;
+	margin: .5em;
+}
+
+/* select {
+	background-color: #08d;
+	border-radius: 18px;
+	border: 0;
+	box-sizing: border-box;
+	color: #eee;
+	cursor: pointer;
+	font-size: 16px;
+	padding: .5em;
+	margin: .5em;
+	outline: 0;
+	text-align: center;
+} */
+
+.table-center {
+	display: flex;
+	width: 100%;
+	height: 30%;
+	justify-content:space-around;
+	white-space: nowrap;
+	overflow: scroll;
+}
+
+table {
+	/* border: 1px solid black; */
+	border-collapse: collapse;
+	border-spacing: 2px;
+	text-align: left;
+	width: 75%;
+}
+
+thead {
+	text-align: left;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+th, td {
+	/* border: 1px solid black; */
+	border-collapse: collapse;
+	border-spacing: 2px;
+	padding: 2;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+th {
+	background: lightgray;
+}
+
+td.header {
+	background: #ffd700;
+	color: red;
+	font-weight: bold;
+}
+
+td.callsign {
+	/* background: #08d; */
+	/* color: whitesmoke; */
+	color: #08d;
+	font-weight: bold;
+}
+
+.center {
+	text-align: center;
+}
+
+.table-caption {
+	font-size: 1.5em;
+	font-weight: bold;
+	padding-top: .5em;
+	padding-bottom: .5em;
+}
+
+.table-container-left{
+  min-width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: auto;
+  padding-right: auto;
+  float: left;
+}
+
+.stats-container {
+	width: 100%;
+	display: flex;
+}
+
+.responsive-table {
+  li {
+	min-width: 20%;
+	border-radius: 5px;
+	padding: 1em 1em;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1em;
+  }
+  
+  li.table-header {
+	  justify-content: center;
+  }
+  
+  .table-header {
+	color: #eee;
+	font-weight: bold;
+	background-color: #08d;
+	/* font-size: 14px; */
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+  }
+  
+  .table-row {
+	background-color: #ffffff;
+	box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+  }
+  
+  .col-1 {
+	flex-basis: 60%;
+	text-align: right;
+	min-width: 20%;
+  }
+  
+  .col-2 {
+	flex-basis: 30%;
+  }
+  
+  @media all and (max-width: 767px) {
+	.table-header {
+	  display: none;
+	}
+	.table-row{
+	  
+	}
+	li {
+	  display: block;
+	}
+	.col {
+	  
+	  flex-basis: 100%;
+	  
+	}
+	.col {
+	  display: flex;
+	  padding: 10px 0;
+	  &:before {
+		color: #6C7A89;
+		padding-right: 10px;
+		content: attr(data-label);
+		flex-basis: 50%;
+		text-align: right;
+	  }
+	}
+  }
+}
+
+.image-left {
+	display: flex;
+	float: left;
+	width: 100px;
+	height: 100px;
+	align: middle;
+}
+/* Modernization v1
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #222;
+    padding: 0.5em 1em;
+    color: #fff;
+}
+
+.title-left ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+.title-left li {
+    margin: 0;
+    font-size: 1em;
+}
+
+.callsign {
+    color: red;
+    font-weight: bold;
+}
+
+.header-nav .nav-list {
+    display: flex;
+    gap: 1em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav .nav-list li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 0.75em;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.header-nav .nav-list li a:hover {
+    background-color: #444;
+    border-radius: 4px;
+    color: #f0f0f0;
+}
+*/
+
+/* Modernization v2 */
+
+/* Give links some colour... but not globally, just a test
+a {
+    color: #eee;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #f0f0f0;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #ccc;
+}
+*/
+
+.header-nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.header-nav a:hover {
+    color: #f0f0f0;
+    background-color: #444;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #222;
+    padding: 0.5em 1em;
+    color: #fff;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+}
+
+.dashboard-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.interface-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    margin-left: 1em;
+    font-size: 0.9em;
+}
+
+.callsign {
+    color: red;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+
+/* Commented out for Modernization
+.header-container {
+	width: 100%;
+	display: flex;
+}
+*/
+.title-left {
+	font-size: 2em;
+	float: left;
+	padding-top: .5%;
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+/*
+.header-nav {
+	display: flex;
+	justify-content: space-evenly;
+	padding: 2%;
+
+.header-nav {
+    background-color: #222;
+    padding: 0.5em 1em;
+}
+
+.nav-list {
+    display: flex;
+    gap: 1em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-list li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 0.75em;
+    transition: background 0.3s, color 0.3s;
+}
+
+.nav-list li a:hover {
+    background-color: #444;
+    border-radius: 4px;
+    color: #f0f0f0;
+}
+*/
+	
+}
+
+.nav-link {
+	padding: .5em;
+}
+
+.separator {
+	display: block;
+	width:100%;
+	height: 1em;
+}
+
+.form {
+	padding-bottom: 1em;
+	display: flex;
+	justify-content: space-around;
+}
+
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+	content: " \25B4\25BE";
+}
+
+.footer {
+	padding-top: 1em;
+	display: flex;
+	justify-content: center;
+	font-size: .5em;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/*the container must be positioned relative:*/
+.custom-select {
+	width: 10rem;
+	position: relative;
+	margin: .5em;
+	display: flex;
+	float: left;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: #08d;
+  font-size: 14px;
+  width: 10rem;
+  height: .9rem;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+	font-size: 14px;
+	position: absolute;
+	border-radius: 12px;
+	background-color: #08d;
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}

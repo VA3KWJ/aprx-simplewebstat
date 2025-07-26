@@ -11,7 +11,13 @@ $interface = $interfaces[0] ?? 'rf';
 $GLOBALS['interface'] = $interface; // used in loadStats
 $range = $_POST['range'] ?? 'all';
 $stats = loadStats($range);
-$aprxver = shell_exec("aprx --v | grep version: | cut -d ':' -f 2");
+if (!is_array($stats) || !isset($stats['stations'])) {
+    $stats = ['stations' => []]; // Safe fallback
+}
+$aprxver = trim(shell_exec("ps -C aprx -o args= | grep -o 'version:[^ ]*' | cut -d ':' -f2"));
+if (empty($aprxver)) {
+    $aprxver = "(running, version unknown)";
+}
 
 // Reverse geocode web server lat/lon using Nominatim (no cache)
 $locationLabel = 'Unknown';
@@ -36,7 +42,7 @@ if ($response !== false) {
         $locationLabel = trim("$city, $region", ', ');
     }
 }
-
+// Digi check
 $digiEnabled = isDigipeatEnabled($interface, $confpath);
 ?>
 <!DOCTYPE html>
@@ -55,8 +61,8 @@ $digiEnabled = isDigipeatEnabled($interface, $confpath);
             <span>Interface: <strong><?php echo htmlspecialchars($interface); ?></strong></span>
             <span>Version: <strong><?php echo htmlspecialchars(trim($aprxver)); ?></strong></span>
             <span>Location: <strong><?php echo htmlspecialchars($locationLabel); ?></strong></span>
-            <span>Digipeat: <strong><?php echo $digiEnabled ? 'Enabled' : 'Disabled'; ?></strong></span>
-            <span><a href="/live.php">Live Stats</a></span>
+	    <span>Digipeat: <strong><?php echo $digiEnabled ? 'Enabled' : 'Disabled'; ?></strong></span>
+	    <span><a href="/live.php">Live Stats</a></span>
         </div>
     </header>
 
@@ -88,7 +94,7 @@ $digiEnabled = isDigipeatEnabled($interface, $confpath);
                     <tr>
                         <th>Callsign</th>
                         <th>Packets</th>
-                        <th>Last Heard</th>
+                        <th>Last Heard (UTC)</th>
                         <th>Source</th>
                         <th>Digi?</th>
                         <th>Distance (km)</th>
@@ -97,16 +103,16 @@ $digiEnabled = isDigipeatEnabled($interface, $confpath);
                 <tbody>
                     <?php foreach ($stats['stations'] as $callsign => $data): ?>
                     <tr>
-                        <td class="callsign">
-                          <?php $baseCall = explode('-', $callsign)[0]; ?>
-                          <a href="https://aprs.fi/<?php echo urlencode($callsign); ?>" target="_blank" rel="noopener noreferrer">
-                            <?php echo htmlspecialchars($callsign); ?>
-                          </a>
-                          <a href="https://www.qrz.com/db/<?php echo urlencode($baseCall); ?>"
-                             target="_blank" rel="noopener noreferrer"
-                             title="Lookup <?php echo htmlspecialchars($baseCall); ?> on QRZ.com"
-                             style="margin-left: 0.3em; font-size: 0.9em; color: #ccc;">📘</a>
-                        </td>
+			<td class="callsign">
+			  <?php $baseCall = explode('-', $callsign)[0]; ?>
+			  <a href="https://aprs.fi/<?php echo urlencode($callsign); ?>" target="_blank" rel="noopener noreferrer">
+			    <?php echo htmlspecialchars($callsign); ?>
+			  </a>
+			  <a href="https://www.qrz.com/db/<?php echo urlencode($baseCall); ?>"
+			     target="_blank" rel="noopener noreferrer"
+			     title="Lookup <?php echo htmlspecialchars($baseCall); ?> on QRZ.com"
+			     style="margin-left: 0.3em; font-size: 0.9em; color: #ccc;">📘</a>
+			</td>
                         <td><?php echo intval($data['count']); ?></td>
                         <td><?php echo htmlspecialchars($data['last_heard']); ?></td>
                         <td><?php echo htmlspecialchars($data['heard_via'] ?? '—'); ?></td>
@@ -122,5 +128,10 @@ $digiEnabled = isDigipeatEnabled($interface, $confpath);
     <footer class="footer">
         <p>&copy; <?php echo date("Y"); ?> VA3KWJ APRX Monitor</p>
     </footer>
+<?php if (isset($_GET['debug']) && $_GET['debug'] == '1'): ?>
+<pre style="background:#222; color:#0f0; padding:1em;">
+<?= var_export($stats, true); ?>
+</pre>
+<?php endif; ?>
 </body>
 </html>

@@ -6,6 +6,12 @@ You can set here a path to the log file or set static
 interface callsign and language.
 ********************************************************/
 
+/* Modernization */
+if (!defined('APRX_LOG_FILE')) {
+    define('APRX_LOG_FILE', '/var/log/aprx/aprx-rf.log');
+}
+/* End Modernization */
+
 $logpath        = "/var/log/aprx/aprx-rf.log";                                                // full path to the aprx-rf.log file
 $confpath       = "/etc/aprx.conf";                                                  // full path to the aprx.conf file
 $cntalias       = "CA";                                                         // your national APRS untraced digipeater alias
@@ -37,8 +43,8 @@ station position data for calculating distance from
 received station in details.php
 ********************************************************/
 
-$stationlat     = 43.5122;                                                    //station latitude in decimal degrees
-$stationlon     = -079.3249;                                                    //station longtitude in decimal degrees
+$stationlat     = 43.8527;                                                    //station latitude in decimal degrees
+$stationlon     = -79.5414;                                                    //station longtitude in decimal degrees
 
 $logourl        = "aprslogo.png";                                               // logo path,with file name
 
