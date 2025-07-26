@@ -1,3 +1,13 @@
+# Modernized Simple APRX Website
+
+This is a fork of promo776's APRX Simple Webstats with a modernized interface.
+
+Still very much a WIP.
+
+The interface has been cleaned up a fair bit and code has been fixed to work with PHP8.2
+
+Original details and config setup below, follow them to deploy.
+
 # APRX Simple Statistics Website Generator
 
 A simple statistics and information generator for APRX software, which allows to monitor load, frames, stations details, statistics from selected time window and more.
